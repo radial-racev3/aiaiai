@@ -28,29 +28,21 @@ const generateAnswer = async (prompt, history) => {
 const generateImage = async (prompt) => {
   try {
     const ai = getGenAIClient();
-    // Use the modern generateContent API for image generation with the gemini-2.5-flash-image model.
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
-      contents: {
-        parts: [
-          {
-            text: prompt,
-          },
-        ],
-      },
+    
+    // Use Imagen 4 model for high-quality image generation and to avoid Flash Image quota limits.
+    const response = await ai.models.generateImages({
+      model: 'imagen-4.0-generate-001',
+      prompt: prompt,
       config: {
-          responseModalities: [Modality.IMAGE],
+        numberOfImages: 1,
+        outputMimeType: 'image/jpeg',
       },
     });
 
-    // Extract the base64 image data from the response.
-    if (response.candidates?.[0]?.content?.parts) {
-      for (const part of response.candidates[0].content.parts) {
-        if (part.inlineData) {
-          const base64ImageBytes = part.inlineData.data;
-          return `data:image/png;base64,${base64ImageBytes}`;
-        }
-      }
+    if (response.generatedImages && response.generatedImages.length > 0) {
+      const base64ImageBytes = response.generatedImages[0].image.imageBytes;
+      // Return as JPEG data URI
+      return `data:image/jpeg;base64,${base64ImageBytes}`;
     }
     
     return null;
