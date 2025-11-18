@@ -10,30 +10,30 @@ const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedUserRaw = localStorage.getItem('cemil-ai-user');
+    const storedUserRaw = localStorage.getItem('lime-ai-user');
     if (storedUserRaw) {
       try {
         const parsed = JSON.parse(storedUserRaw);
         if (parsed && parsed.username) {
           setUser(parsed);
         } else {
-          localStorage.removeItem('cemil-ai-user');
+          localStorage.removeItem('lime-ai-user');
         }
       } catch (e) {
-        localStorage.removeItem('cemil-ai-user');
+        localStorage.removeItem('lime-ai-user');
       }
     }
     setIsLoading(false);
   }, []);
 
   const login = (username, pass) => {
-    const storedCreds = localStorage.getItem(`cemil_user_${username}`);
+    const storedCreds = localStorage.getItem(`lime_user_${username}`);
     if (storedCreds) {
       const creds = JSON.parse(storedCreds);
       if (creds.password === pass) {
         const loggedInUser = { username };
         setUser(loggedInUser);
-        localStorage.setItem('cemil-ai-user', JSON.stringify(loggedInUser));
+        localStorage.setItem('lime-ai-user', JSON.stringify(loggedInUser));
         return true;
       }
     }
@@ -41,20 +41,20 @@ const AuthProvider = ({ children }) => {
   };
 
   const signup = (username, pass) => {
-    if (localStorage.getItem(`cemil_user_${username}`)) {
+    if (localStorage.getItem(`lime_user_${username}`)) {
       return false; // User already exists
     }
     const newUserCreds = { password: pass };
-    localStorage.setItem(`cemil_user_${username}`, JSON.stringify(newUserCreds));
+    localStorage.setItem(`lime_user_${username}`, JSON.stringify(newUserCreds));
     const newUser = { username };
     setUser(newUser);
-    localStorage.setItem('cemil-ai-user', JSON.stringify(newUser));
+    localStorage.setItem('lime-ai-user', JSON.stringify(newUser));
     return true;
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('cemil-ai-user');
+    localStorage.removeItem('lime-ai-user');
   };
 
   return (
@@ -99,55 +99,60 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-2xl border border-gray-100">
-        <div className="text-center">
-            <h1 className="text-4xl font-extrabold tracking-tight text-black">
-              Cemil.ai
-            </h1>
-          <p className="mt-2 text-gray-500">{isLogin ? 'Welcome back' : 'Create your account'}</p>
+    <div className="flex items-center justify-center min-h-screen bg-white selection:bg-[#ccff00] selection:text-black">
+      <div className="w-full max-w-sm p-8 border-4 border-black rounded-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
+        <div className="text-center mb-8">
+          <h1 className="text-6xl font-bold text-black mb-2 tracking-tight">
+            lime<span className="text-[#ccff00] text-7xl">.</span>ai
+          </h1>
+          <div className="h-2 w-24 bg-[#ccff00] mx-auto rounded-full"></div>
+          <p className="text-black mt-4 font-semibold text-lg">
+            {isLogin ? 'WELCOME BACK' : 'CREATE ACCOUNT'}
+          </p>
         </div>
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div className="space-y-1">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username
-            </label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="block w-full px-4 py-3 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-              placeholder="Enter your username"
+              className="block w-full px-5 py-4 text-black bg-gray-50 border-2 border-black rounded-xl focus:outline-none focus:bg-white focus:shadow-[4px_4px_0px_0px_#ccff00] transition-all placeholder-gray-400 font-bold text-lg"
+              placeholder="Username"
             />
           </div>
           <div className="space-y-1">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
              <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="block w-full px-4 py-3 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-              placeholder="••••••••"
+              className="block w-full px-5 py-4 text-black bg-gray-50 border-2 border-black rounded-xl focus:outline-none focus:bg-white focus:shadow-[4px_4px_0px_0px_#ccff00] transition-all placeholder-gray-400 font-bold text-lg"
+              placeholder="Password"
             />
           </div>
-          {error && <p className="text-sm text-red-600 bg-red-50 p-2 rounded">{error}</p>}
-          <button type="submit" className="w-full py-3 font-bold text-white bg-black rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors">
-            {isLogin ? 'Sign In' : 'Sign Up'}
+          
+          {error && (
+            <div className="p-3 bg-black text-[#ccff00] rounded-lg text-center border-2 border-black">
+              <p className="text-sm font-bold">{error}</p>
+            </div>
+          )}
+          
+          <button type="submit" className="w-full py-4 font-black text-xl text-black bg-[#ccff00] border-2 border-black rounded-xl hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none transition-all">
+            {isLogin ? 'SIGN IN' : 'SIGN UP'}
           </button>
         </form>
-        <div className="text-center">
-          <p className="text-sm text-gray-500">
-            {isLogin ? "New to Cemil.ai?" : 'Already a member?'}
-            <button onClick={() => { setIsLogin(!isLogin); setError(''); }} className="ml-2 font-semibold text-black hover:underline">
-              {isLogin ? 'Sign Up' : 'Sign In'}
-            </button>
-          </p>
+        
+        <div className="mt-8 text-center">
+          <button 
+            onClick={() => { setIsLogin(!isLogin); setError(''); }} 
+            className="text-base font-bold text-gray-400 hover:text-black underline decoration-2 decoration-[#ccff00] underline-offset-4 transition-colors"
+          >
+            {isLogin ? "Don't have an account? Join" : 'Already a member? Login'}
+          </button>
         </div>
       </div>
     </div>
@@ -156,7 +161,7 @@ const AuthPage = () => {
 
 const QAPanel = () => {
   const [messages, setMessages] = useState([
-    { role: 'model', content: "Hello. How can I help you?" }
+    { role: 'model', content: "Hello! I'm lime.ai. Ask me anything." }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -187,20 +192,20 @@ const QAPanel = () => {
       const modelMessage = { role: 'model', content: response };
       setMessages((prev) => [...prev, modelMessage]);
     } catch (e) {
-      setMessages((prev) => [...prev, { role: 'model', content: "Connection error. Please check your network." }]);
+      setMessages((prev) => [...prev, { role: 'model', content: "I encountered an issue. Please try again." }]);
     }
     setIsLoading(false);
   };
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
-      <div className="flex-1 overflow-y-auto pr-2 space-y-6 py-4">
+    <div className="flex flex-col h-full max-w-4xl mx-auto w-full px-4 font-sans">
+      <div className="flex-1 overflow-y-auto space-y-6 py-8 no-scrollbar">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] md:max-w-2xl px-6 py-4 rounded-2xl text-base leading-relaxed shadow-sm ${
+            <div className={`max-w-[85%] px-6 py-4 text-lg font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] ${
               msg.role === 'user' 
-                ? 'bg-black text-white rounded-br-none' 
-                : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none'
+                ? 'bg-[#ccff00] text-black border-2 border-black rounded-3xl rounded-tr-none' 
+                : 'bg-black text-white border-2 border-black rounded-3xl rounded-tl-none'
             }`}>
               <p className="whitespace-pre-wrap">{msg.content}</p>
             </div>
@@ -208,45 +213,46 @@ const QAPanel = () => {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-             <div className="px-6 py-4 rounded-2xl bg-white border border-gray-200 rounded-bl-none">
+             <div className="px-6 py-5 rounded-3xl rounded-tl-none bg-black border-2 border-black">
                 <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-[#ccff00] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                    <div className="w-2 h-2 bg-[#ccff00] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                    <div className="w-2 h-2 bg-[#ccff00] rounded-full animate-bounce"></div>
                 </div>
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} />
+        <div ref={messagesEndRef} className="h-4" />
       </div>
       
-      <div className="mt-4 pt-4">
+      <div className="pb-8 pt-4">
         <div className="relative group">
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-            placeholder="Type your message..."
-            className="w-full pl-6 pr-16 py-4 text-lg bg-white text-gray-900 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-black focus:ring-0 resize-none shadow-sm transition-all placeholder-gray-400"
-            rows={1}
-            disabled={isLoading}
-          />
-          <button
-            onClick={handleSend}
-            disabled={isLoading || !input.trim()}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-xl bg-black text-white hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-md"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-            </svg>
-          </button>
+          <div className="relative flex items-center bg-white border-4 border-black rounded-full shadow-[6px_6px_0px_0px_#ccff00] transition-all focus-within:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] focus-within:translate-x-[2px] focus-within:translate-y-[2px]">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              placeholder="Ask lime.ai..."
+              className="w-full pl-8 py-4 bg-transparent text-black placeholder-gray-400 focus:outline-none rounded-full font-bold text-xl"
+              disabled={isLoading}
+            />
+            <button
+              onClick={handleSend}
+              disabled={isLoading || !input.trim()}
+              className="mr-3 p-3 rounded-full bg-black text-[#ccff00] hover:bg-[#ccff00] hover:text-black disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <p className="text-center text-xs text-gray-400 mt-3">Cemil.ai can make mistakes. Check important info.</p>
       </div>
     </div>
   );
@@ -256,27 +262,27 @@ const MainApp = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
-        <div className="flex items-center gap-4">
-          <h1 className="text-xl font-extrabold tracking-tight text-black">
-            Cemil.ai
+    <div className="flex flex-col h-screen bg-white selection:bg-[#ccff00] selection:text-black">
+      <header className="flex items-center justify-between px-8 py-6 bg-white border-b-4 border-black sticky top-0 z-10">
+        <div className="flex items-center">
+          <h1 className="text-3xl font-black tracking-tight text-black hover:text-[#ccff00] transition-colors cursor-default">
+            lime.ai
           </h1>
         </div>
         <div className="flex items-center gap-6">
-          <span className="text-sm font-medium text-gray-600">{user?.username}</span>
+          <div className="hidden md:block text-sm font-black uppercase tracking-widest text-black bg-[#ccff00] px-3 py-1 rounded-md border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+            {user?.username}
+          </div>
           <button
             onClick={logout}
-            className="px-4 py-2 text-sm font-semibold text-black bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors border border-gray-200"
+            className="text-base font-bold text-black hover:text-[#ccff00] bg-black hover:bg-black px-4 py-2 rounded-lg transition-all border-2 border-black hover:shadow-[4px_4px_0px_0px_#ccff00] text-white"
           >
             Sign Out
           </button>
         </div>
       </header>
-      <main className="flex-1 overflow-hidden flex flex-col relative">
-        <div className="flex-1 overflow-y-auto p-4 md:p-8 w-full max-w-5xl mx-auto">
-          <QAPanel />
-        </div>
+      <main className="flex-1 overflow-hidden flex flex-col relative bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+        <QAPanel />
       </main>
     </div>
   );
@@ -287,14 +293,16 @@ const App = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-gray-50 min-h-screen font-sans flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+      <div className="bg-white min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-20 h-20 border-8 border-black border-t-[#ccff00] rounded-full animate-spin"></div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-50 text-gray-900 min-h-screen font-sans antialiased selection:bg-black selection:text-white">
+    <div className="bg-white text-black min-h-screen font-sans antialiased">
       {user ? <MainApp /> : <AuthPage />}
     </div>
   );

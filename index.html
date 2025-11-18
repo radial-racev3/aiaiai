@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cemil.ai</title>
+    <title>lime.ai</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- React and ReactDOM UMD (Universal Module Definition) for browser usage -->
@@ -13,18 +13,53 @@
     <!-- Babel Standalone to compile JSX in the browser -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
+    <!-- Google Fonts: Fredoka -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+
     <style>
       html, body {
         height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
+        font-family: 'Fredoka', sans-serif;
       }
       body {
-        background-color: #f9fafb; /* gray-50 */
+        background-color: #ffffff;
       }
       #root {
         height: 100%;
+      }
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+      }
+      
+      /* Custom Neon Utilities */
+      .text-lime-neon {
+        color: #ccff00;
+      }
+      .bg-lime-neon {
+        background-color: #ccff00;
+      }
+      .border-lime-neon {
+        border-color: #ccff00;
+      }
+      .shadow-lime-neon {
+        box-shadow: 0 0 10px #ccff00;
+      }
+      .selection-lime {
+        ::selection {
+          background-color: #ccff00;
+          color: black;
+        }
       }
     </style>
     
@@ -42,11 +77,10 @@
   <body>
     <div id="root"></div>
 
-    <!-- 1. Load Service (As a Module to support imports) -->
-    <!-- Renamed to aiService.js to force fresh load -->
+    <!-- 1. Load Service -->
     <script type="module" src="./services/aiService.js"></script>
 
-    <!-- 2. Load App Logic (Consolidated into one file for reliability) -->
+    <!-- 2. Load App Logic -->
     <script type="text/babel" src="./index.js"></script>
   </body>
 </html>

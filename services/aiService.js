@@ -1,7 +1,7 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-console.log("AI Service (Chat Only) Initializing...");
+console.log("lime.ai Service Initializing...");
 
 const API_KEY = "AIzaSyBAnKFv0b874M5ofplpPMDLWWPSGdt4Kjg";
 
@@ -33,4 +33,4 @@ window.geminiService = {
   generateAnswer
 };
 
-console.log("AI Service initialized and attached to window");
+console.log("lime.ai Service attached to window");
