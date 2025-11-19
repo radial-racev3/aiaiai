@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="lime.ai - Minimalist AI Interface" />
     <title>lime.ai</title>
+    
+    <!-- Website Logo / Favicon (Scalable SVG handles 16x16, 48x48, 128x128 automatically) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ccff00' stroke='black' stroke-width='8'/%3E%3Cpath d='M25 25C35 15 50 15 60 20' stroke='black' stroke-width='6' stroke-linecap='round' opacity='0.3'/%3E%3Ccircle cx='65' cy='45' r='8' fill='black'/%3E%3Cpath d='M35 65 Q50 75 65 65' stroke='black' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -43,6 +47,15 @@
         background-color: #ccff00;
         color: black;
         box-shadow: 3px 3px 0px 0px rgba(0,0,0,1);
+      }
+      
+      /* Message Bubble Animation */
+      @keyframes messagePop {
+        0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      .animate-pop {
+        animation: messagePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       }
     </style>
     
@@ -429,8 +442,8 @@
             {/* Chat Area */}
             <div className="flex-1 overflow-y-auto space-y-6 py-8 no-scrollbar">
               {messages.map((msg, index) => (
-                <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] px-6 py-4 text-lg font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] ${
+                <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-pop`}>
+                  <div className={`max-w-[85%] px-6 py-4 text-lg font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.2)] ${
                     msg.role === 'user' 
                       ? 'bg-[#ccff00] text-black border-2 border-black rounded-3xl rounded-tr-none' 
                       : 'bg-black text-white border-2 border-black rounded-3xl rounded-tl-none'
@@ -440,7 +453,7 @@
                 </div>
               ))}
               {isLoading && (
-                <div className="flex justify-start">
+                <div className="flex justify-start animate-pop">
                    <div className="px-6 py-5 rounded-3xl rounded-tl-none bg-black border-2 border-black">
                       <div className="flex items-center space-x-2">
                           <div className="w-2 h-2 bg-[#ccff00] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
